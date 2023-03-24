@@ -1,3 +1,4 @@
+import { useGetPostsQuery } from "./store/services/products";
 import {
 	Box,
 	Button,
@@ -9,6 +10,18 @@ import {
 
 function App() {
 	const { toggleColorMode, colorMode } = useColorMode();
+	const { data, error, isLoading } = useGetPostsQuery();
+	let errorMessage: null | string = null;
+
+	if (error) {
+		if ('status' in error) {
+			const errMsg = 'data' in error ? JSON.stringify(error.data) : error.error;
+
+			errorMessage = `Error: ${errMsg}.`;
+		} else {
+			errorMessage = error.message ?? 'undefine error';
+		}
+	}
 
 	return (
 		<>
@@ -26,7 +39,11 @@ function App() {
 						</Button>
 					</Flex>
 					<Box as='main' mt={6}>
-						table
+						<>
+							{errorMessage?.toUpperCase()}
+							{isLoading && 'Loading...'}
+							{data?.products.map((product) => product.title)}
+						</>
 					</Box>
 				</Container>
 			</Box>
