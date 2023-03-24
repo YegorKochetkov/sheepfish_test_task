@@ -1,10 +1,5 @@
-import {
-	Button,
-	Flex,
-	Heading,
-	useColorMode
-	} from "@chakra-ui/react";
-import React from "react";
+import { Button, Flex, Heading, useColorMode } from '@chakra-ui/react';
+import React from 'react';
 
 function Header() {
 	const { toggleColorMode, colorMode } = useColorMode();
