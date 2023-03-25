@@ -1,5 +1,6 @@
-import React from 'react';
+import React from "react";
 import {
+	background,
 	Button,
 	Center,
 	Image,
@@ -16,6 +17,7 @@ function ProductItem(product: ProductType) {
 
 	return (
 		<Tr
+			transition='background 0.3s'
 			key={product.id}
 			_hover={{
 				outline: '1px solid gray',
@@ -25,7 +27,7 @@ function ProductItem(product: ProductType) {
 			<Td paddingX='0' textAlign='center'>
 				{product.id}
 			</Td>
-			<Td maxW='3xs' pl='0'>
+			<Td maxW='3xs'>
 				<Text
 					overflow='hidden'
 					textOverflow='ellipsis'
@@ -36,7 +38,7 @@ function ProductItem(product: ProductType) {
 					{product.title}
 				</Text>
 			</Td>
-			<Td maxW='sm' pl='0'>
+			<Td maxW='sm'>
 				<Tooltip label={product.description} openDelay={200}>
 					<Text
 						overflow='hidden'
@@ -48,11 +50,8 @@ function ProductItem(product: ProductType) {
 					</Text>
 				</Tooltip>
 			</Td>
-			<Td textAlign='center' pl='0'>
-				{product.price}
-			</Td>
+			<Td textAlign='center'>{product.price}</Td>
 			<Td
-				pl='0'
 				_hover={{
 					':hover img': {
 						width: '10rem',
@@ -73,19 +72,15 @@ function ProductItem(product: ProductType) {
 					/>
 				</Center>
 			</Td>
-			<Td textAlign='center' pl='0'>
-				{product.rating}
-			</Td>
-			<Td textAlign='center' pl='0'>
-				{product.stock}
-			</Td>
-			<Td pl='0'>{product.category}</Td>
-			<Td pl='0'>
+			<Td textAlign='center'>{product.rating}</Td>
+			<Td textAlign='center'>{product.stock}</Td>
+			<Td>{product.category}</Td>
+			<Td>
 				<Button colorScheme='teal' size='sm'>
 					Details
 				</Button>
 			</Td>
-			<Td pl='0'>
+			<Td>
 				<Button colorScheme='red' size='sm'>
 					Delete
 				</Button>
