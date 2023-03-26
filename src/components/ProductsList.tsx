@@ -1,8 +1,8 @@
-import React from "react";
-import useDataSort from "../hooks/useDataSort";
-import { useGetPostsQuery } from "../store/services/products";
-import ProductItem from "./ProductItem";
-import ProductsListControl from "./ProductsListControl";
+import React from 'react';
+import useDataSort from '../hooks/useDataSort';
+import { useGetPostsQuery } from '../store/services/products';
+import ProductItem from './ProductItem';
+import ProductsListControl from './ProductsListControl';
 import {
 	Table,
 	Thead,
@@ -17,7 +17,7 @@ import {
 } from '@chakra-ui/react';
 
 function ProductsList() {
-	const [isLargerThan1280] = useMediaQuery('(min-width: 1280px)');
+	const [isLargerThan1440] = useMediaQuery('(min-width: 1440px)');
 	const { colorMode } = useColorMode();
 	const { data, error, isLoading } = useGetPostsQuery();
 	const { sortedData, sortOrder, handleSort, currSortBy } = useDataSort(
@@ -42,7 +42,7 @@ function ProductsList() {
 
 	return (
 		<TableContainer mb='5rem'>
-			<Table variant='simple' size={isLargerThan1280 ? 'md' : 'sm'}>
+			<Table variant='simple' size={isLargerThan1440 ? 'md' : 'sm'}>
 				<Thead>
 					<ProductsListControl
 						handleSort={handleSort}
