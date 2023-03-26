@@ -1,8 +1,9 @@
-import React from 'react';
+import React, { createContext } from 'react';
 import useDataSort from '../hooks/useDataSort';
 import { useGetPostsQuery } from '../store/services/products';
+import { ProductType } from '../types/product';
 import ProductItem from './ProductItem';
-import ProductsListControl from './ProductsListControl';
+import ProductsListControls from './ProductsListControls';
 import {
 	Table,
 	Thead,
@@ -13,27 +14,30 @@ import {
 	TableContainer,
 	Center,
 	useMediaQuery,
-	useColorMode,
 } from '@chakra-ui/react';
+
+type DataSortContextType = {
+	handleSort: (value: keyof ProductType) => void;
+	sortedData: ProductType[] | undefined;
+	currSortBy: keyof ProductType;
+	sortOrder: 'asc' | 'desc';
+};
+
+export const DataSortContext = createContext<DataSortContextType | null>(null);
 
 function ProductsList() {
 	const [isLargerThan1440] = useMediaQuery('(min-width: 1440px)');
-	const { colorMode } = useColorMode();
-	const { data, error, isLoading } = useGetPostsQuery();
-	const { sortedData, sortOrder, handleSort, currSortBy } = useDataSort(
-		data?.products,
-		'id'
-	);
+	const { error, isLoading } = useGetPostsQuery();
+	const { sortedData, sortOrder, handleSort, currSortBy } = useDataSort();
+
 	let errorMessage: null | string = null;
 
-	if (error) {
-		if ('status' in error) {
-			const errMsg = 'data' in error ? JSON.stringify(error.data) : error.error;
+	if (error && 'status' in error) {
+		const errMsg = 'data' in error ? JSON.stringify(error.data) : error.error;
 
-			errorMessage = `Error: ${errMsg}.`;
-		} else {
-			errorMessage = error.message ?? 'undefine error';
-		}
+		errorMessage = `Error: ${errMsg}.`;
+	} else if (error) {
+		errorMessage = error.message ?? 'undefine error';
 	}
 
 	if (errorMessage) return <Center>errorMessage?.toUpperCase()</Center>;
@@ -41,30 +45,29 @@ function ProductsList() {
 	if (isLoading) return <Center>Loading...</Center>;
 
 	return (
-		<TableContainer mb='5rem'>
-			<Table variant='simple' size={isLargerThan1440 ? 'md' : 'sm'}>
-				<Thead>
-					<ProductsListControl
-						handleSort={handleSort}
-						colorMode={colorMode}
-						currSortBy={currSortBy}
-						sortOrder={sortOrder}
-					/>
-				</Thead>
-				<Tbody>
-					{sortedData.map((product) => (
-						<ProductItem key={product.id} {...product} />
-					))}
-				</Tbody>
-				<Tfoot>
-					<Tr>
-						<Th>prev</Th>
-						<Th>pages</Th>
-						<Th>next</Th>
-					</Tr>
-				</Tfoot>
-			</Table>
-		</TableContainer>
+		<DataSortContext.Provider
+			value={{ sortedData, sortOrder, handleSort, currSortBy }}
+		>
+			<TableContainer marginBottom='5rem'>
+				<Table variant='simple' size={isLargerThan1440 ? 'md' : 'sm'}>
+					<Thead>
+						<ProductsListControls />
+					</Thead>
+					<Tbody>
+						{sortedData?.map((product) => (
+							<ProductItem key={product.id} {...product} />
+						))}
+					</Tbody>
+					<Tfoot>
+						<Tr>
+							<Th>prev</Th>
+							<Th>pages</Th>
+							<Th>next</Th>
+						</Tr>
+					</Tfoot>
+				</Table>
+			</TableContainer>
+		</DataSortContext.Provider>
 	);
 }
 

@@ -1,15 +1,14 @@
 import { useMemo, useState } from 'react';
+import { useGetPostsQuery } from '../store/services/products';
 import { ProductType } from '../types/product';
 
-function useDataSort(
-	data: ProductType[] = [],
-	initialSortBy: keyof ProductType
-) {
-	const [currSortBy, setCurrSortBy] = useState(initialSortBy);
+function useDataSort() {
+	const { data } = useGetPostsQuery();
+	const [currSortBy, setCurrSortBy] = useState<keyof ProductType>('id');
 	const [sortOrder, setSortOrder] = useState<'asc' | 'desc'>('asc');
 
 	const sortedData = useMemo(() => {
-		const sortedData = data.slice().sort((a, b) => {
+		const sortedData = data?.products.slice().sort((a, b) => {
 			const prev = a[currSortBy];
 			const next = b[currSortBy];
 
