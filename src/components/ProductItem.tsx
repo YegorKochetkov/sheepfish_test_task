@@ -1,19 +1,13 @@
+import { Button, Center, Image, Td, Tr, useColorMode } from '@chakra-ui/react';
 import React from 'react';
-import {
-	background,
-	Button,
-	Center,
-	Image,
-	Td,
-	Text,
-	Tooltip,
-	Tr,
-	useColorMode,
-} from '@chakra-ui/react';
+import { useAppDispatch } from '../store/hooks';
+import { deleteProduct } from '../store/productsSlice';
+import ProductItemTextField from './ProductItemTextField';
 import type { ProductType } from '../types/product';
 
 function ProductItem(product: ProductType) {
 	const { colorMode } = useColorMode();
+	const dispatch = useAppDispatch();
 
 	return (
 		<Tr
@@ -27,28 +21,12 @@ function ProductItem(product: ProductType) {
 			<Td paddingX='0' textAlign='center'>
 				{product.id}
 			</Td>
-			<Td maxW='3xs'>
-				<Text
-					overflow='hidden'
-					textOverflow='ellipsis'
-					whiteSpace='nowrap'
-					lineHeight='1.5rem'
-					title={product.title}
-				>
-					{product.title}
-				</Text>
+
+			<Td>
+				<ProductItemTextField maxWidth='10rem' category={product.title} />
 			</Td>
-			<Td maxW='sm'>
-				<Tooltip label={product.description} openDelay={200}>
-					<Text
-						overflow='hidden'
-						textOverflow='ellipsis'
-						whiteSpace='nowrap'
-						lineHeight='1.5rem'
-					>
-						{product.description}
-					</Text>
-				</Tooltip>
+			<Td>
+				<ProductItemTextField maxWidth='15rem' category={product.description} />
 			</Td>
 			<Td textAlign='center'>{product.price}</Td>
 			<Td
@@ -74,7 +52,9 @@ function ProductItem(product: ProductType) {
 			</Td>
 			<Td textAlign='center'>{product.rating}</Td>
 			<Td textAlign='center'>{product.stock}</Td>
-			<Td>{product.category}</Td>
+			<Td>
+				<ProductItemTextField maxWidth='10rem' category={product.category} />
+			</Td>
 			<Td>
 				<Button colorScheme='teal' size='sm'>
 					Details
