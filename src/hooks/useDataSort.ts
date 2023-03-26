@@ -1,5 +1,5 @@
-import { useEffect, useMemo, useState } from "react";
-import { ProductType } from "../types/product";
+import { useMemo, useState } from 'react';
+import { ProductType } from '../types/product';
 
 function useDataSort(
 	data: ProductType[] = [],
