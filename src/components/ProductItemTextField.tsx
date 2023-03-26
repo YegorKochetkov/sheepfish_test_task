@@ -17,7 +17,6 @@ function ProductItemTextField({
 				textOverflow='ellipsis'
 				whiteSpace='nowrap'
 				lineHeight='1.5rem'
-				title={category}
 			>
 				{category}
 			</Text>
