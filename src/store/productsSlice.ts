@@ -15,25 +15,25 @@ export const productsSlice = createSlice({
 	name: 'products',
 	initialState,
 	reducers: {
+		setAllProducts: (state, action: PayloadAction<ProductType[]>) => {
+			state.allProducts = action.payload;
+		},
 		addProduct: (state, action: PayloadAction<ProductType>) => {
 			state.allProducts.push(action.payload);
 		},
-		updateProduct: (state, action: PayloadAction<ProductType>) => {
-			state.allProducts.forEach((product) => {
-				if (product.id === action.payload.id) {
-					product = action.payload;
-				}
-			});
-		},
-		deleteProduct: (state, action: PayloadAction<number>) => {
-			state.allProducts = state.allProducts.filter(
-				(product) => product.id !== action.payload
+		deleteProduct: (state, action: PayloadAction<ProductType>) => {
+			const index = state.allProducts.findIndex(
+				(post) => post.id === action.payload.id
 			);
+
+			if (index !== -1) {
+				state.allProducts[index] = action.payload;
+			}
 		},
 	},
 });
 
-export const { addProduct, updateProduct, deleteProduct } =
+export const { setAllProducts, addProduct, deleteProduct } =
 	productsSlice.actions;
 
 export const selectProducts = (state: RootState) => state.products.allProducts;
@@ -41,6 +41,6 @@ export const selectProduct = (
 	state: RootState,
 	action: PayloadAction<number>
 ) =>
-	state.products.allProducts.filter((product) => product.id === action.payload);
+	state.products.allProducts.find((product) => product.id === action.payload);
 
 export default productsSlice.reducer;
