@@ -7,7 +7,7 @@ function Header() {
 	return (
 		<Flex as='header' justifyContent='space-between' alignItems='center' mt={2}>
 			<Heading>Products list</Heading>
-			<Button onClick={toggleColorMode} minW='min-content'>
+			<Button onClick={toggleColorMode} minWidth='min-content'>
 				{colorMode === 'light' ? 'Dark' : 'Light'} Mode
 			</Button>
 		</Flex>

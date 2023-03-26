@@ -6,7 +6,7 @@ function App() {
 	return (
 		<>
 			<Box height='100dvh'>
-				<Container maxW='min'>
+				<Container maxWidth='min' minWidth='75rem'>
 					<Header />
 					<Box as='main' mt={6}>
 						<ProductsList />
