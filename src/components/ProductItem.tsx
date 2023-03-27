@@ -1,9 +1,18 @@
-import { Button, Center, Image, Td, Tr, useColorMode } from '@chakra-ui/react';
-import React from 'react';
-import { useAppDispatch } from '../store/hooks';
-import { deleteProduct } from '../store/productsSlice';
-import { useDeletePostMutation } from '../store/services/products';
-import ProductItemTextField from './ProductItemTextField';
+import React from "react";
+import { Link as ReactRouterLink } from "react-router-dom";
+import { useAppDispatch } from "../store/hooks";
+import { deleteProduct } from "../store/productsSlice";
+import { useDeletePostMutation } from "../store/services/products";
+import ProductItemTextField from "./ProductItemTextField";
+import {
+	Button,
+	Center,
+	Image,
+	Link,
+	Td,
+	Tr,
+	useColorMode,
+} from '@chakra-ui/react';
 import type { ProductType } from '../types/product';
 
 function ProductItem(product: ProductType) {
@@ -71,13 +80,14 @@ function ProductItem(product: ProductType) {
 			</Td>
 			<Td>
 				<Button colorScheme='teal' size='sm'>
-					Details
+					<Link as={ReactRouterLink} to={`product/${product.id}`}>
+						Details
+					</Link>
 				</Button>
 			</Td>
 			<Td>
 				<Button
-					opacity={isLoading ? '0.2' : '1'}
-					cursor={isLoading ? 'inherit' : 'pointer'}
+					isLoading={isLoading}
 					colorScheme='red'
 					size='sm'
 					onClick={() => handleDeleteProducts(product.id)}
