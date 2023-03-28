@@ -12,34 +12,33 @@ function usePagination() {
 	const { sortedData: sortedItems } = useDataSort();
 	const [searchParams, setSearchParams] = useSearchParams();
 
+	const perPageItems = parseInt(searchParams.get('perPage') ?? '10', 10);
+	const pagesCount = Math.ceil((sortedItems?.length || 0) / perPageItems);
 	let pageFromParams = parseInt(searchParams.get('page') ?? '1', 10);
-	let perPageItems = parseInt(searchParams.get('perPage') ?? '10', 10);
 
 	const currPage = useMemo(() => {
-		const pagesCount = Math.ceil((sortedItems?.length || 0) / perPageItems);
-
 		if (pageFromParams > pagesCount) {
 			pageFromParams = pagesCount;
 
 			setSearchParams((search) => {
-				search.set('page', String(pageFromParams));
+				search.set('page', String(pagesCount));
 
 				return search;
 			});
 		}
 
-		if (pageFromParams <= 0) {
+		if (pageFromParams < 1) {
 			pageFromParams = 1;
 
 			setSearchParams((search) => {
-				search.set('page', String(pageFromParams));
+				search.set('page', String(1));
 
 				return search;
 			});
 		}
 
 		return pageFromParams;
-	}, [perPageItems, sortedItems, searchParams]);
+	}, [searchParams]);
 
 	const paginatedItems = useMemo(
 		() => chunk(sortedItems, perPageItems),
