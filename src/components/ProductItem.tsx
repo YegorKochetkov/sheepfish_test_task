@@ -1,5 +1,5 @@
 import React from "react";
-import { Link as ReactRouterLink } from "react-router-dom";
+import { Link as ReactRouterLink, useSearchParams } from "react-router-dom";
 import { useAppDispatch } from "../store/hooks";
 import { deleteProduct } from "../store/productsSlice";
 import { useDeletePostMutation } from "../store/services/products";
@@ -7,6 +7,7 @@ import ProductItemTextField from "./ProductItemTextField";
 import {
 	Button,
 	Center,
+	Highlight,
 	Image,
 	Link,
 	Td,
@@ -19,6 +20,9 @@ function ProductItem(product: ProductType) {
 	if (product.isDeleted) {
 		return null;
 	}
+
+	const [searchParams] = useSearchParams();
+	const query = searchParams.get('search') ?? '';
 
 	const { colorMode } = useColorMode();
 	const dispatch = useAppDispatch();
@@ -42,7 +46,9 @@ function ProductItem(product: ProductType) {
 			}}
 		>
 			<Td paddingX='0' textAlign='center'>
-				{product.id}
+				<Highlight query={query} styles={{ py: '1', bg: 'orange.100' }}>
+					{product.id.toString()}
+				</Highlight>
 			</Td>
 
 			<Td>
