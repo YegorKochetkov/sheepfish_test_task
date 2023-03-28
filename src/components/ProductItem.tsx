@@ -46,10 +46,10 @@ function ProductItem(product: ProductType) {
 			</Td>
 
 			<Td>
-				<ProductItemTextField maxWidth='10rem' category={product.title} />
+				<ProductItemTextField width='8rem' category={product.title} />
 			</Td>
 			<Td>
-				<ProductItemTextField maxWidth='15rem' category={product.description} />
+				<ProductItemTextField width='15rem' category={product.description} />
 			</Td>
 			<Td textAlign='center'>{product.price}</Td>
 			<Td
@@ -76,7 +76,7 @@ function ProductItem(product: ProductType) {
 			<Td textAlign='center'>{product.rating}</Td>
 			<Td textAlign='center'>{product.stock}</Td>
 			<Td>
-				<ProductItemTextField maxWidth='10rem' category={product.category} />
+				<ProductItemTextField width='8rem' category={product.category} />
 			</Td>
 			<Td>
 				<Button colorScheme='teal' size='sm'>
