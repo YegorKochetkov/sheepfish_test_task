@@ -19,26 +19,22 @@ function usePagination() {
 	const currPage = useMemo(() => {
 		if (pageFromParams > pagesCount) {
 			pageFromParams = pagesCount;
-
-			setSearchParams((search) => {
-				search.set('page', String(pagesCount));
-
-				return search;
-			});
 		}
 
 		if (pageFromParams < 1) {
 			pageFromParams = 1;
-
-			setSearchParams((search) => {
-				search.set('page', String(1));
-
-				return search;
-			});
 		}
 
 		return pageFromParams;
 	}, [searchParams]);
+
+	useEffect(() => {
+		setSearchParams((search) => {
+			search.set('page', String(currPage));
+
+			return search;
+		});
+	}, [currPage]);
 
 	const paginatedItems = useMemo(
 		() => chunk(sortedItems, perPageItems),
