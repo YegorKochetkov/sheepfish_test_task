@@ -1,15 +1,19 @@
 import { useEffect, useMemo, useState } from "react";
 import { useSearchParams } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "../store/hooks";
-import { setAllProducts } from "../store/productsSlice";
+import { selectProducts, setAllProducts } from "../store/productsSlice";
 import { useGetPostsQuery } from "../store/services/products";
 import { ProductType } from "../types/product";
+import toFilter from "../utils/toFilter";
 
 function useDataSort() {
 	const [searchParams] = useSearchParams();
+	const filter = searchParams.get('search') ?? '';
+
 	const sortByFromParams = searchParams.get('sortby') as
 		| keyof ProductType
 		| null;
+
 	const orderByFromParams = searchParams.get('orderby') as
 		| 'asc'
 		| 'desc'
@@ -26,7 +30,7 @@ function useDataSort() {
 	const { data } = useGetPostsQuery();
 
 	const dispatch = useAppDispatch();
-	const products = useAppSelector((state) => state.products.allProducts);
+	const products = useAppSelector(selectProducts);
 
 	useEffect(() => {
 		if (data && !products.length) {
@@ -40,7 +44,9 @@ function useDataSort() {
 	}, [searchParams]);
 
 	const sortedData = useMemo(() => {
-		const sortedData = products
+		const filteredProducts = toFilter(products, filter);
+
+		const sortedData = filteredProducts
 			.filter((product) => product.isDeleted !== true)
 			.sort((a, b) => {
 				const prev = a[currSortBy];
