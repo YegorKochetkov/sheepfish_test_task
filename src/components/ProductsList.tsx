@@ -12,6 +12,7 @@ import {
 	Tbody,
 	TableContainer,
 	Center,
+	Text,
 	useMediaQuery,
 } from '@chakra-ui/react';
 
@@ -26,7 +27,7 @@ export const DataSortContext = createContext<DataSortContextType | null>(null);
 function ProductsList() {
 	const [isLargerThan1440] = useMediaQuery('(min-width: 1440px)');
 	const { error, isLoading } = useGetPostsQuery();
-	const { orderBy, currSortBy } = useDataSort();
+	const { sortedData, orderBy, currSortBy } = useDataSort();
 	const {
 		currPage,
 		perPageItems,
@@ -68,8 +69,14 @@ function ProductsList() {
 					page={currPage}
 					getLink={getLink}
 					onPerPageChange={onPerPageChange}
+					totalPages={sortedData.length}
 				/>
 			</TableContainer>
+			{!visibleItems && (
+				<Text padding={6} fontSize='xl'>
+					No matches
+				</Text>
+			)}
 		</DataSortContext.Provider>
 	);
 }

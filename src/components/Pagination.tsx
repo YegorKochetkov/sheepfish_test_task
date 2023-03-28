@@ -14,14 +14,16 @@ type PaginationPropsType = {
 	page: number;
 	getLink: (page: number) => string;
 	onPerPageChange: (perPage: string) => void;
+	totalPages: number;
 };
 
 export const Pagination = (props: PaginationPropsType) => {
-	const { page, perPage, getLink, onPerPageChange } = props;
-	const { sortedData } = useDataSort();
-	const totalPages = sortedData.length;
+	const { page, perPage, getLink, onPerPageChange, totalPages } = props;
 
 	const numberOfButtons = Math.ceil(totalPages / perPage);
+
+	if (numberOfButtons === 0) return null;
+
 	const buttons = useMemo(() => {
 		return Array.from({ length: numberOfButtons }, (_, index) => index + 1);
 	}, [totalPages, perPage]);
@@ -47,26 +49,28 @@ export const Pagination = (props: PaginationPropsType) => {
 	const isLastButton = currPage === numberOfButtons;
 	const isFirstButton = currPage === 1;
 
-	const isButtonShow = (button: number) => {
-		const first5Buttons = button <= 5 && currPage <= 3;
+	const isButtonVisible = (button: number) => {
+		const first5Buttons = button <= 5 && currPage <= 5 - 1;
 		const last5Buttons =
-			button >= numberOfButtons - 4 && currPage >= numberOfButtons - 2;
+			button >= numberOfButtons - 4 && currPage >= numberOfButtons - 4 - 1;
+		const afterNextButton = nextButton + 1;
+		const beforePrevButton = prevButton - 1;
 
 		return (
 			button === currPage ||
-			button === prevButton ||
-			button === nextButton ||
 			button === firstButton ||
 			button === lastButton ||
-			button === nextButton + 1 ||
-			button === prevButton - 1 ||
+			button === nextButton ||
+			button === afterNextButton ||
+			button === prevButton ||
+			button === beforePrevButton ||
 			first5Buttons ||
 			last5Buttons
 		);
 	};
 
 	const visibleButtons = useMemo(() => {
-		const filtered: (number | boolean)[] = buttons.filter(isButtonShow);
+		const filtered: (number | boolean)[] = buttons.filter(isButtonVisible);
 
 		const firstButton = 1;
 		const lastButton = numberOfButtons;
@@ -89,7 +93,7 @@ export const Pagination = (props: PaginationPropsType) => {
 		];
 
 		return visible;
-	}, [isButtonShow]);
+	}, [isButtonVisible]);
 
 	return (
 		<Flex justifyContent='space-between' marginY={8}>
