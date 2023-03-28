@@ -1,4 +1,4 @@
-import { createSlice } from '@reduxjs/toolkit';
+import { createSlice } from "@reduxjs/toolkit";
 import type { PayloadAction } from '@reduxjs/toolkit';
 import type { RootState } from './store';
 import type { ProductType } from '../types/product';
@@ -37,10 +37,5 @@ export const { setAllProducts, addProduct, deleteProduct } =
 	productsSlice.actions;
 
 export const selectProducts = (state: RootState) => state.products.allProducts;
-export const selectProduct = (
-	state: RootState,
-	action: PayloadAction<number>
-) =>
-	state.products.allProducts.find((product) => product.id === action.payload);
 
 export default productsSlice.reducer;
