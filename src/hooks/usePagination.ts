@@ -5,10 +5,12 @@ import {
 	useMemo,
 	useState
 	} from "react";
-import { useSearchParams } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import useDataSort from "./useDataSort";
 
 function usePagination() {
+	const navigate = useNavigate();
+
 	const { sortedData: sortedItems } = useDataSort();
 	const [searchParams, setSearchParams] = useSearchParams();
 
@@ -29,11 +31,10 @@ function usePagination() {
 	}, [searchParams]);
 
 	useEffect(() => {
-		setSearchParams((search) => {
-			search.set('page', String(currPage));
+		searchParams.set('page', String(currPage));
+		const newUrl = searchParams.toString();
 
-			return search;
-		});
+		navigate('?' + newUrl, { replace: true });
 	}, [currPage]);
 
 	const paginatedItems = useMemo(
@@ -52,11 +53,10 @@ function usePagination() {
 	};
 
 	const onPerPageChange = (perPage: string) => {
-		setSearchParams((search) => {
-			search.set('perPage', perPage);
+		searchParams.set('perPage', perPage);
+		const newUrl = searchParams.toString();
 
-			return search;
-		});
+		navigate('?' + newUrl, { replace: true });
 	};
 
 	return {

@@ -1,13 +1,22 @@
 import { Input } from "@chakra-ui/react";
 import React, { useEffect, useState } from "react";
-import { useSearchParams } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 
 function Search() {
-	const [searchParams, setSearchParams] = useSearchParams();
+	const navigate = useNavigate();
+
+	const [searchParams] = useSearchParams();
 	const filterFromParams = searchParams.get('search');
 
 	const [query, setQuery] = useState(filterFromParams ?? '');
 	const [debouncedQuery, setDebouncedQuery] = useState(filterFromParams ?? '');
+
+	useEffect(() => {
+		if (filterFromParams !== null) {
+			setQuery(filterFromParams);
+			setDebouncedQuery(filterFromParams);
+		}
+	}, [searchParams]);
 
 	useEffect(() => {
 		const timeoutId = setTimeout(() => {
@@ -20,11 +29,10 @@ function Search() {
 	}, [query]);
 
 	useEffect(() => {
-		setSearchParams((search) => {
-			search.set('search', debouncedQuery);
+		searchParams.set('search', debouncedQuery);
+		const newUrl = searchParams.toString();
 
-			return search;
-		});
+		navigate('?' + newUrl, { replace: true });
 	}, [debouncedQuery]);
 
 	return (
