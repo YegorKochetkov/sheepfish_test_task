@@ -1,26 +1,24 @@
-import React, { createContext } from 'react';
-import useDataSort from '../hooks/useDataSort';
-import { useGetPostsQuery } from '../store/services/products';
-import { ProductType } from '../types/product';
-import ProductItem from './ProductItem';
-import ProductsListControls from './ProductsListControls';
+import React, { createContext, useState } from "react";
+import useDataSort from "../hooks/useDataSort";
+import usePagination from "../hooks/usePagination";
+import { useGetPostsQuery } from "../store/services/products";
+import { ProductType } from "../types/product";
+import { Pagination } from "./Pagination";
+import ProductItem from "./ProductItem";
+import ProductsListControls from "./ProductsListControls";
 import {
 	Table,
 	Thead,
 	Tbody,
-	Tfoot,
-	Tr,
-	Th,
 	TableContainer,
 	Center,
 	useMediaQuery,
 } from '@chakra-ui/react';
 
 type DataSortContextType = {
-	handleSort: (value: keyof ProductType) => void;
-	sortedData: ProductType[] | undefined;
+	sortedItems: ProductType[] | undefined;
 	currSortBy: keyof ProductType;
-	sortOrder: 'asc' | 'desc';
+	orderBy: 'asc' | 'desc';
 };
 
 export const DataSortContext = createContext<DataSortContextType | null>(null);
@@ -28,7 +26,15 @@ export const DataSortContext = createContext<DataSortContextType | null>(null);
 function ProductsList() {
 	const [isLargerThan1440] = useMediaQuery('(min-width: 1440px)');
 	const { error, isLoading } = useGetPostsQuery();
-	const { sortedData, sortOrder, handleSort, currSortBy } = useDataSort();
+	const { orderBy, currSortBy } = useDataSort();
+	const {
+		currPage,
+		perPageItems,
+		visibleItems,
+		sortedItems,
+		getLink,
+		onPerPageChange,
+	} = usePagination();
 
 	let errorMessage: null | string = null;
 
@@ -45,27 +51,25 @@ function ProductsList() {
 	if (isLoading) return <Center>Loading...</Center>;
 
 	return (
-		<DataSortContext.Provider
-			value={{ sortedData, sortOrder, handleSort, currSortBy }}
-		>
+		<DataSortContext.Provider value={{ sortedItems, orderBy, currSortBy }}>
 			<TableContainer marginBottom='5rem'>
 				<Table variant='simple' size={isLargerThan1440 ? 'md' : 'sm'}>
 					<Thead>
 						<ProductsListControls />
 					</Thead>
 					<Tbody>
-						{sortedData?.map((product) => (
+						{visibleItems?.map((product) => (
 							<ProductItem key={product.id} {...product} />
 						))}
 					</Tbody>
-					<Tfoot>
-						<Tr>
-							<Th>prev</Th>
-							<Th>pages</Th>
-							<Th>next</Th>
-						</Tr>
-					</Tfoot>
 				</Table>
+				<Pagination
+					totalPages={sortedItems.length}
+					perPage={perPageItems}
+					page={currPage}
+					getLink={getLink}
+					onPerPageChange={onPerPageChange}
+				/>
 			</TableContainer>
 		</DataSortContext.Provider>
 	);
