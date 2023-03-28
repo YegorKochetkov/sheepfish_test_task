@@ -47,7 +47,7 @@ function ProductsList() {
 		errorMessage = error.message ?? 'undefine error';
 	}
 
-	if (errorMessage) return <Center>errorMessage?.toUpperCase()</Center>;
+	if (errorMessage) return <Center>{errorMessage?.toUpperCase()}</Center>;
 
 	if (isLoading) return <Center>Loading...</Center>;
 
