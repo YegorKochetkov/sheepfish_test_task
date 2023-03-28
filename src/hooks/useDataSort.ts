@@ -1,12 +1,27 @@
-import { useEffect, useMemo, useState } from 'react';
-import { useAppDispatch, useAppSelector } from '../store/hooks';
-import { setAllProducts } from '../store/productsSlice';
-import { useGetPostsQuery } from '../store/services/products';
-import { ProductType } from '../types/product';
+import { useEffect, useMemo, useState } from "react";
+import { useSearchParams } from "react-router-dom";
+import { useAppDispatch, useAppSelector } from "../store/hooks";
+import { setAllProducts } from "../store/productsSlice";
+import { useGetPostsQuery } from "../store/services/products";
+import { ProductType } from "../types/product";
 
 function useDataSort() {
-	const [currSortBy, setCurrSortBy] = useState<keyof ProductType>('id');
-	const [sortOrder, setSortOrder] = useState<'asc' | 'desc'>('asc');
+	const [searchParams] = useSearchParams();
+	const sortByFromParams = searchParams.get('sortby') as
+		| keyof ProductType
+		| null;
+	const orderByFromParams = searchParams.get('orderby') as
+		| 'asc'
+		| 'desc'
+		| null;
+
+	const [currSortBy, setCurrSortBy] = useState<keyof ProductType>(
+		sortByFromParams ?? 'id'
+	);
+
+	const [orderBy, setOrderBy] = useState<'asc' | 'desc'>(
+		orderByFromParams ?? 'asc'
+	);
 
 	const { data } = useGetPostsQuery();
 
@@ -19,35 +34,33 @@ function useDataSort() {
 		}
 	}, [data]);
 
+	useEffect(() => {
+		sortByFromParams && setCurrSortBy(sortByFromParams);
+		orderByFromParams && setOrderBy(orderByFromParams);
+	}, [searchParams]);
+
 	const sortedData = useMemo(() => {
-		const sortedData = products.slice().sort((a, b) => {
-			const prev = a[currSortBy];
-			const next = b[currSortBy];
+		const sortedData = products
+			.filter((product) => product.isDeleted !== true)
+			.sort((a, b) => {
+				const prev = a[currSortBy];
+				const next = b[currSortBy];
 
-			if (typeof prev === 'string' && typeof next === 'string') {
-				return sortOrder === 'asc'
-					? prev.localeCompare(next)
-					: next.localeCompare(prev);
-			} else if (typeof prev === 'number' && typeof next === 'number') {
-				return sortOrder === 'asc' ? prev - next : next - prev;
-			}
+				if (typeof prev === 'string' && typeof next === 'string') {
+					return orderBy === 'asc'
+						? prev.localeCompare(next)
+						: next.localeCompare(prev);
+				} else if (typeof prev === 'number' && typeof next === 'number') {
+					return orderBy === 'asc' ? prev - next : next - prev;
+				}
 
-			return 0;
-		});
+				return 0;
+			});
 
 		return sortedData;
-	}, [sortOrder, currSortBy, products]);
+	}, [orderBy, currSortBy, products, searchParams]);
 
-	function handleSort(sortBy: keyof ProductType) {
-		if (sortBy === currSortBy) {
-			setSortOrder(sortOrder === 'asc' ? 'desc' : 'asc');
-		} else {
-			setCurrSortBy(sortBy);
-			setSortOrder('asc');
-		}
-	}
-
-	return { sortedData, sortOrder, handleSort, currSortBy };
+	return { sortedData, orderBy, currSortBy };
 }
 
 export default useDataSort;
