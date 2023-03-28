@@ -64,7 +64,6 @@ function ProductsList() {
 					</Tbody>
 				</Table>
 				<Pagination
-					totalPages={sortedItems.length}
 					perPage={perPageItems}
 					page={currPage}
 					getLink={getLink}

@@ -7,9 +7,9 @@ import {
 	} from "@chakra-ui/react";
 import React, { useMemo } from "react";
 import { Link } from "react-router-dom";
+import useDataSort from "../hooks/useDataSort";
 
 type PaginationPropsType = {
-	totalPages: number;
 	perPage: number;
 	page: number;
 	getLink: (page: number) => string;
@@ -17,7 +17,9 @@ type PaginationPropsType = {
 };
 
 export const Pagination = (props: PaginationPropsType) => {
-	const { totalPages, page, perPage, getLink, onPerPageChange } = props;
+	const { page, perPage, getLink, onPerPageChange } = props;
+	const { sortedData } = useDataSort();
+	const totalPages = sortedData.length;
 
 	const numberOfButtons = Math.ceil(totalPages / perPage);
 	const buttons = useMemo(() => {
@@ -44,8 +46,6 @@ export const Pagination = (props: PaginationPropsType) => {
 
 	const isLastButton = currPage === numberOfButtons;
 	const isFirstButton = currPage === 1;
-
-	const spread = 2;
 
 	const isButtonShow = (button: number) => {
 		const first5Buttons = button <= 5 && currPage <= 3;
@@ -92,7 +92,7 @@ export const Pagination = (props: PaginationPropsType) => {
 	}, [isButtonShow]);
 
 	return (
-		<Flex justifyContent='space-between' marginTop={8}>
+		<Flex justifyContent='space-between' marginY={8}>
 			<Flex as='nav'>
 				<Button
 					as={Link}
@@ -152,6 +152,7 @@ export const Pagination = (props: PaginationPropsType) => {
 				<Select
 					value={currPerPage}
 					onChange={({ target }) => onPerPageChange(target.value)}
+					paddingY={0}
 				>
 					<option value='1'>1</option>
 					<option value='5'>5</option>
