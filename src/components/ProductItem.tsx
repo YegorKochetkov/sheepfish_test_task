@@ -1,8 +1,8 @@
 import React from "react";
 import { Link as ReactRouterLink, useSearchParams } from "react-router-dom";
 import { useAppDispatch } from "../store/hooks";
-import { deleteProduct } from "../store/productsSlice";
-import { useDeletePostMutation } from "../store/services/products";
+import { deleteProduct, ProductType } from "../store/productsSlice";
+import { useDeleteProductsMutation } from "../store/services/products";
 import ProductItemTextField from "./ProductItemTextField";
 import {
 	Button,
@@ -13,8 +13,8 @@ import {
 	Td,
 	Tr,
 	useColorMode,
+	useToast,
 } from '@chakra-ui/react';
-import type { ProductType } from '../types/product';
 
 function ProductItem(product: ProductType) {
 	if (product.isDeleted) {
@@ -24,15 +24,23 @@ function ProductItem(product: ProductType) {
 	const [searchParams] = useSearchParams();
 	const query = searchParams.get('search') ?? '';
 
+	const toast = useToast();
+
 	const { colorMode } = useColorMode();
 	const dispatch = useAppDispatch();
-	const [deletePost, { isLoading }] = useDeletePostMutation();
+	const [deletePost, { isLoading }] = useDeleteProductsMutation();
 
 	const handleDeleteProducts = async (id: number) => {
 		const response = await deletePost(id);
 
 		if ('data' in response) {
 			dispatch(deleteProduct(response.data));
+			toast({
+				description: 'Product deleted.',
+				status: 'info',
+				duration: 9000,
+				isClosable: true,
+			});
 		}
 	};
 
