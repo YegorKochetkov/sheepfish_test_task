@@ -36,6 +36,7 @@ function ProductItem(product: ProductType) {
 		if ('data' in response) {
 			dispatch(deleteProduct(response.data));
 			toast({
+				position: 'top',
 				description: 'Product deleted.',
 				status: 'info',
 				duration: 9000,
