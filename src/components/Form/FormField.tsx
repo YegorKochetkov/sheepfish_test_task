@@ -1,5 +1,5 @@
-import { Field, FieldProps } from "formik";
-import React from "react";
+import { Field, FieldProps } from 'formik';
+import React from 'react';
 import {
 	FormControl,
 	FormErrorMessage,
@@ -17,10 +17,7 @@ const FormField = ({ name, placeholder, type }: FormFieldType) => {
 	return (
 		<Field name={name}>
 			{({ field, meta }: FieldProps) => (
-				<FormControl
-					isInvalid={Boolean(meta.error && meta.touched)}
-					marginBottom={4}
-				>
+				<FormControl isInvalid={!!meta.error && meta.touched} marginBottom={4}>
 					<FormLabel textTransform='capitalize'>{name}</FormLabel>
 					<Input {...field} placeholder={placeholder} type={type} />
 					<FormErrorMessage>{meta.error}</FormErrorMessage>
