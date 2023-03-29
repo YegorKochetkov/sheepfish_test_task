@@ -50,9 +50,9 @@ export const Pagination = (props: PaginationPropsType) => {
 	const isFirstButton = currPage === 1;
 
 	const isButtonVisible = (button: number) => {
-		const first5Buttons = button <= 5 && currPage <= 5 - 1;
+		const first5Buttons = button <= 5 && currPage <= 3;
 		const last5Buttons =
-			button >= numberOfButtons - 4 && currPage >= numberOfButtons - 4 - 1;
+			button >= numberOfButtons - 4 && currPage >= numberOfButtons - 2;
 		const afterNextButton = nextButton + 1;
 		const beforePrevButton = prevButton - 1;
 
@@ -73,7 +73,7 @@ export const Pagination = (props: PaginationPropsType) => {
 		const filtered: (number | boolean)[] = buttons.filter(isButtonVisible);
 
 		const firstButton = 1;
-		const lastButton = numberOfButtons;
+		const lastButton = buttons.length;
 		const firstVisibleButton = filtered[0] as number;
 		const secondVisibleButton = filtered[1] as number;
 		const lastVisibleButton = filtered.at(-1) as number;
