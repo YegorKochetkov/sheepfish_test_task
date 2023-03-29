@@ -20,7 +20,7 @@ function Search() {
 
 	useEffect(() => {
 		const timeoutId = setTimeout(() => {
-			setDebouncedQuery(() => query);
+			setDebouncedQuery(query);
 		}, 200);
 
 		return () => {
@@ -42,7 +42,7 @@ function Search() {
 			name='search'
 			autoFocus
 			value={query}
-			onChange={(e) => setQuery(e.target.value)}
+			onChange={(e) => setQuery(e.target.value.trim())}
 		/>
 	);
 }

@@ -5,7 +5,9 @@ function toFilter(items: ProductType[], filter: string) {
 		return items;
 	}
 
-	const filteredItems = items.filter((item) => isRequired(item, filter));
+	const filteredItems = items.filter((item) =>
+		isRequired(item, filter.toLowerCase())
+	);
 
 	return filteredItems;
 }
