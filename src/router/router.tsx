@@ -1,15 +1,16 @@
 import React from 'react';
-import { createBrowserRouter } from 'react-router-dom';
+import { createHashRouter, redirect } from 'react-router-dom';
 import App from '../App';
 import ErrorPage from '../components/ErrorPage';
 import ProductDetails from '../components/ProductDetails';
 import ProductsList from '../components/ProductsList';
 
-const router = createBrowserRouter([
+const router = createHashRouter([
 	{
 		path: '',
 		element: <App />,
 		errorElement: <ErrorPage />,
+		loader: () => redirect('/'),
 		children: [
 			{
 				path: '',
