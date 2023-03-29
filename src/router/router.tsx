@@ -1,13 +1,13 @@
-import React from "react";
-import { createHashRouter, redirect } from "react-router-dom";
-import App from "../App";
-import ErrorPage from "../components/ErrorPage";
-import ProductDetails from "../components/ProductDetails";
-import ProductsList from "../components/ProductsList";
+import React from 'react';
+import { createBrowserRouter } from 'react-router-dom';
+import App from '../App';
+import ErrorPage from '../components/ErrorPage';
+import ProductDetails from '../components/ProductDetails';
+import ProductsList from '../components/ProductsList';
 
-const router = createHashRouter([
+const router = createBrowserRouter([
 	{
-		path: '/',
+		path: '',
 		element: <App />,
 		errorElement: <ErrorPage />,
 		children: [
