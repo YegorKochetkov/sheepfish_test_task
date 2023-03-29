@@ -1,10 +1,13 @@
 import { useEffect, useMemo, useState } from "react";
 import { useSearchParams } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "../store/hooks";
-import { selectProducts, setAllProducts } from "../store/productsSlice";
-import { useGetPostsQuery } from "../store/services/products";
-import { ProductType } from "../types/product";
+import { useGetProductsQuery } from "../store/services/products";
 import toFilter from "../utils/toFilter";
+import {
+	ProductType,
+	selectProducts,
+	setAllProducts,
+} from '../store/productsSlice';
 
 function useDataSort() {
 	const [searchParams] = useSearchParams();
@@ -27,7 +30,7 @@ function useDataSort() {
 		orderByFromParams ?? 'asc'
 	);
 
-	const { data } = useGetPostsQuery();
+	const { data } = useGetProductsQuery();
 
 	const dispatch = useAppDispatch();
 	const products = useAppSelector(selectProducts);

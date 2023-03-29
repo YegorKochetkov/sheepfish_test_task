@@ -1,4 +1,4 @@
-import { ProductType } from "../types/product";
+import { ProductType } from "../store/productsSlice";
 
 function toFilter(items: ProductType[], filter: string) {
 	if (filter.length === 0) {

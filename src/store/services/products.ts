@@ -1,12 +1,12 @@
-import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
-import type { ProductType } from '../../types/product';
+import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
+import { ProductType } from "../productsSlice";
 
 export const productApi = createApi({
 	reducerPath: 'productsApi',
 	baseQuery: fetchBaseQuery({ baseUrl: 'https://dummyjson.com/' }),
 	tagTypes: ['Products'],
 	endpoints: (builder) => ({
-		getPosts: builder.query<{ products: ProductType[] }, void>({
+		getProducts: builder.query<{ products: ProductType[] }, void>({
 			query: () => ({ url: 'products' }),
 			providesTags: (result) =>
 				result
@@ -19,10 +19,7 @@ export const productApi = createApi({
 					  ]
 					: ['Products'],
 		}),
-		addPost: builder.mutation<
-			ProductType,
-			{ product: Omit<ProductType, 'id' | 'deletedOn' | 'isDeleted'> }
-		>({
+		addProducts: builder.mutation<ProductType, Partial<ProductType>>({
 			query: (body) => ({
 				url: `products/add`,
 				method: 'POST',
@@ -31,7 +28,7 @@ export const productApi = createApi({
 			}),
 			invalidatesTags: [{ type: 'Products', id: 'LIST' }],
 		}),
-		deletePost: builder.mutation<ProductType, number>({
+		deleteProducts: builder.mutation<ProductType, number>({
 			query(id) {
 				return {
 					url: `products/${id}`,
@@ -43,5 +40,8 @@ export const productApi = createApi({
 	}),
 });
 
-export const { useGetPostsQuery, useDeletePostMutation, useAddPostMutation } =
-	productApi;
+export const {
+	useGetProductsQuery,
+	useDeleteProductsMutation,
+	useAddProductsMutation,
+} = productApi;

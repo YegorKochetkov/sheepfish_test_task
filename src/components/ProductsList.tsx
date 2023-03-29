@@ -1,8 +1,8 @@
 import React, { createContext, useState } from "react";
 import useDataSort from "../hooks/useDataSort";
 import usePagination from "../hooks/usePagination";
-import { useGetPostsQuery } from "../store/services/products";
-import { ProductType } from "../types/product";
+import { ProductType } from "../store/productsSlice";
+import { useGetProductsQuery } from "../store/services/products";
 import { Pagination } from "./Pagination";
 import ProductItem from "./ProductItem";
 import ProductsListControls from "./ProductsListControls";
@@ -26,7 +26,7 @@ export const DataSortContext = createContext<DataSortContextType | null>(null);
 
 function ProductsList() {
 	const [isLargerThan1440] = useMediaQuery('(min-width: 1440px)');
-	const { error, isLoading } = useGetPostsQuery();
+	const { error, isLoading } = useGetProductsQuery();
 	const { sortedData, orderBy, currSortBy } = useDataSort();
 	const {
 		currPage,

@@ -6,7 +6,7 @@ import {
 	} from "@chakra-ui/react";
 import React from "react";
 import { useSearchParams } from "react-router-dom";
-import { ProductType } from "../types/product";
+import { ProductType } from "../store/productsSlice";
 
 type ProductItemTextFieldProps = Pick<ProductType, 'category'> &
 	HTMLChakraProps<'p'>;

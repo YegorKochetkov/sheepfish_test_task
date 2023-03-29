@@ -1,7 +1,7 @@
 import { HTMLChakraProps, Th, useColorMode } from "@chakra-ui/react";
 import React, { useContext } from "react";
 import { useSearchParams } from "react-router-dom";
-import { ProductType } from "../types/product";
+import { ProductType } from "../store/productsSlice";
 import { DataSortContext } from "./ProductsList";
 
 type ProductsListControlProps = HTMLChakraProps<'th'> & {
