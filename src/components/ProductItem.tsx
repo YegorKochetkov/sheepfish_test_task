@@ -1,15 +1,14 @@
-import React from "react";
-import { Link as ReactRouterLink, useSearchParams } from "react-router-dom";
-import { useAppDispatch } from "../store/hooks";
-import { deleteProduct, ProductType } from "../store/productsSlice";
-import { useDeleteProductsMutation } from "../store/services/products";
-import ProductItemTextField from "./ProductItemTextField";
+import React from 'react';
+import { Link as ReactRouterLink, useSearchParams } from 'react-router-dom';
+import { useAppDispatch } from '../store/hooks';
+import { deleteProduct, ProductType } from '../store/productsSlice';
+import { useDeleteProductsMutation } from '../store/services/products';
+import ProductItemTextField from './ProductItemTextField';
 import {
 	Button,
 	Center,
 	Highlight,
 	Image,
-	Link,
 	Td,
 	Tr,
 	useColorMode,
@@ -94,10 +93,13 @@ function ProductItem(product: ProductType) {
 				<ProductItemTextField width='8rem' category={product.category} />
 			</Td>
 			<Td>
-				<Button colorScheme='teal' size='sm'>
-					<Link as={ReactRouterLink} to={`product/${product.id}`}>
-						Details
-					</Link>
+				<Button
+					as={ReactRouterLink}
+					to={`product/${product.id}`}
+					colorScheme='teal'
+					size='sm'
+				>
+					Details
 				</Button>
 			</Td>
 			<Td>
