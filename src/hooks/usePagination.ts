@@ -12,7 +12,7 @@ function usePagination() {
 	const navigate = useNavigate();
 
 	const { sortedData: sortedItems } = useDataSort();
-	const [searchParams, setSearchParams] = useSearchParams();
+	const [searchParams] = useSearchParams();
 
 	const perPageItems = parseInt(searchParams.get('perPage') ?? '10', 10);
 	const pagesCount = Math.ceil((sortedItems?.length || 0) / perPageItems);

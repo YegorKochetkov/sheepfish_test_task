@@ -7,7 +7,6 @@ import {
 	} from "@chakra-ui/react";
 import React, { useMemo } from "react";
 import { Link } from "react-router-dom";
-import useDataSort from "../hooks/useDataSort";
 
 type PaginationPropsType = {
 	perPage: number;
