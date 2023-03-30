@@ -9,7 +9,8 @@ import {
 	Center,
 	Highlight,
 	Image,
-	Link,
+	LinkBox,
+	LinkOverlay,
 	Td,
 	Tr,
 	useColorMode,
@@ -94,11 +95,11 @@ function ProductItem(product: ProductType) {
 				<ProductItemTextField width='8rem' category={product.category} />
 			</Td>
 			<Td>
-				<Button colorScheme='teal' size='sm'>
-					<Link as={ReactRouterLink} to={`product/${product.id}`}>
+				<LinkBox as={Button} colorScheme='teal' size='sm'>
+					<LinkOverlay as={ReactRouterLink} to={`product/${product.id}`}>
 						Details
-					</Link>
-				</Button>
+					</LinkOverlay>
+				</LinkBox>
 			</Td>
 			<Td>
 				<Button
