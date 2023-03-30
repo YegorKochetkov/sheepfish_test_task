@@ -1,7 +1,5 @@
 import React from "react";
 import { useParams } from "react-router-dom";
-import { useAppSelector } from "../store/hooks";
-import { ProductType, selectProducts } from "../store/productsSlice";
 import getProductById from "../utils/getProductById";
 import {
 	Alert,
@@ -18,9 +16,6 @@ import {
 	Stack,
 	Center,
 	useToast,
-	Flex,
-	VStack,
-	HStack,
 } from '@chakra-ui/react';
 
 function ProductDetails() {
