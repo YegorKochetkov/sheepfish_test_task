@@ -1,4 +1,4 @@
-import { chunk } from "lodash";
+import chunk from "lodash/chunk";
 import { useEffect, useMemo } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import useDataSort from "./useDataSort";

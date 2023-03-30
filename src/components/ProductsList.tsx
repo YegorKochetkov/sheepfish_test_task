@@ -1,11 +1,12 @@
-import React, { createContext, useState } from "react";
+import React, { createContext, lazy } from "react";
 import useDataSort from "../hooks/useDataSort";
 import usePagination from "../hooks/usePagination";
 import { ProductType } from "../store/productsSlice";
 import { useGetProductsQuery } from "../store/services/products";
-import { Pagination } from "./Pagination";
-import ProductItem from "./ProductItem";
+import Pagination from "./Pagination";
 import ProductsListControls from "./ProductsListControls";
+const ProductItem = lazy(() => import('./ProductItem'));
+
 import {
 	Table,
 	Thead,

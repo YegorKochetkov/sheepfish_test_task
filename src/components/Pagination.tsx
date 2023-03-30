@@ -16,7 +16,7 @@ type PaginationPropsType = {
 	totalPages: number;
 };
 
-export const Pagination = (props: PaginationPropsType) => {
+const Pagination = (props: PaginationPropsType) => {
 	const { page, perPage, getLink, onPerPageChange, totalPages } = props;
 
 	const numberOfButtons = Math.ceil(totalPages / perPage);
@@ -166,3 +166,5 @@ export const Pagination = (props: PaginationPropsType) => {
 		</Flex>
 	);
 };
+
+export default Pagination;
